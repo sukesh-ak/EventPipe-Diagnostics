@@ -47,7 +47,8 @@ namespace DotNetEventPipe
             }
 
             if (string.IsNullOrEmpty(traceFilename))
-                traceFilename = Path.Combine(Environment.CurrentDirectory, "traces", Path.GetRandomFileName() + ".nettrace");
+                // Default this to yyyyMMddHHmmss-PID.nettrace 
+                traceFilename = Path.Combine(Environment.CurrentDirectory, "traces", DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + processId + ".nettrace");
             else
                 traceFilename = Path.Combine(Environment.CurrentDirectory, "traces", traceFilename + ".nettrace");
 
