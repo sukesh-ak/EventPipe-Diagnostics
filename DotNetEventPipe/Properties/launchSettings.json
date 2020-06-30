@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DotNetEventPipe": {
+      "commandName": "Project",
+      "commandLineArgs": "collect -p 29624 -d 20 -f \"newtrace\""
+    }
+  }
+}
