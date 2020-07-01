@@ -4,24 +4,27 @@ A simple trace and analyze application to showcase, how EventPipe in .NET Core w
 ### Using .NET Event Pipe for diagnostics
 
 EventPipe technology of .NET Core runtime is a cross-platform alternative to ETW on Windows and LTTng on Linux since 
-they work only on a single platform. EventPipe deliver the same experience on Windows, Linux, or macOS. 
+they work only on a single platform. EventPipe deliver the same experience on Windows, Linux and macOS. 
 
 EventPipe can also be used on any .NET Core applications running on .NET Core 3.0 Preview 5 or later.
 
-Diagnostic IPC Protocol in .NET Core runtime listens and communicates over a platform-specific transport. On Unix/Linux based platforms, a Unix Domain Socket will be used, and on Windows, a Named Pipe will be used.
+Diagnostic IPC Protocol in .NET Core runtime listens and communicates over a platform-specific transport. 
+On Unix/Linux based platforms, a Unix Domain Socket will be used, and on Windows, a Named Pipe will be used.
 
 ### Why EventPipe for Production Diagnostics
-Because its a cross-platform alternative to ETW/LTTng and also the functionality is built-into .NET Core framework itself.
-Very useful for analyzing CPU usage, IO, lock contention, allocation rate, etc where you might want to capture a performance trace. 
+EventPipe is the best cross-platform an alternative to ETW/LTTng and also the functionality is built-into .NET Core framework so you don't need any external components.
+
+
+Its very useful for analyzing CPU usage, IO, lock contention, allocation rate, etc where you might want to capture a performance trace. 
 This trace can then be moved to a developer machine where it can be analyzed with profiling tools such as PerfView/VisualStudio or visualized as a flame graph with speedscope.
 
 ### Documentation
-EventPipe-Diagnostics project here contains three functionalities.
+EventPipe-Diagnostics project here contains three functionalities as commands.
   1. PS (lists all process running with EventPipe enabled)
   2. Collect trace (collects trace for a defined period of time)
   3. Analyze trace (prints out the manage stack trace)
 
-#### Let us see the command-line options 
+#### Did someone say Help!!! 
 You can use -? option to see all the command line options
 ```
 > DotNetEventPipe -?
@@ -34,7 +37,7 @@ Options:
 
 Commands:
   collect    Capture trace from a process using Event Pipe
-  analyze    Analyze trace a process
+  analyze    Analyze trace a process and prints managed call stack
   ps         Process list with Event Pipe available for Diagnostics
 ```
 
@@ -48,7 +51,7 @@ Process with Event Pipe available for Diagnostics
 
 
 #### What does Collect command option do?
-Collect option runs a trace on a selected .NET process which supports EventPipe.
+Collect option runs a trace on a selected .NET process which supports EventPipe for a specific duration.
 
 ```
 DotNetEventPipe collect -?
@@ -85,7 +88,7 @@ Analyze option reads the trace and prints out managed stack on console
 ```
 > DotNetEventPipe analyze -?
 analyze:
-  Analyze trace a process
+  Analyze trace a process and prints managed call stack
 
 Usage:
   DotNetEventPipe analyze [options]
@@ -164,7 +167,8 @@ Stack for Thread (10900):
 On Windows, .nettrace files can be viewed on [PerfView](https://github.com/microsoft/perfview) for analysis. 
 For traces collected on other platforms, the trace file can be moved to a Windows machine to be viewed on PerfView.
 
-For full options to take traces check [dotnet-trace](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-trace)
+This is a more focused version provided in source for experiment with the API. 
+For full options to take traces, please check official CLI [dotnet-trace](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-trace)
 
 ### Feedback
 Feel free to provide feedback on how it would help and what needs to be changed/added

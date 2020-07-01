@@ -38,7 +38,7 @@ namespace DotNetEventPipe
 
         // Analyze command and handler
         private static Command AnalyzeCommand() =>
-            new Command(name: "analyze", description: "Analyze trace a process")
+            new Command(name: "analyze", description: "Analyze trace a process and prints managed call stack")
             {
                         // Handler
                         CommandHandler.Create<IConsole, FileInfo>(new TraceStack().Analyze),
