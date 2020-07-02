@@ -16,19 +16,15 @@ namespace DotNetEventPipe
 {
     public class TraceStack
     {
-        public TraceStack()
-        {
-        }
-
         /// <summary>
         /// Trigger a trace for given number of seconds
         /// </summary>
         /// <param name="console"></param>
         /// <param name="processId">Process Id of the process</param>
         /// <param name="duration">Duration of trace in seconds (default:10sec)</param>
-        /// <param name="NetTraceFileName">Output filename for the trace</param>
+        /// <param name="traceFilename">Output filename for the trace</param>
         /// <returns>Returns 0 for success and 1 for failure</returns>
-        public int Collect(IConsole console, int processId,int duration, string traceFilename)
+        public static int Collect(IConsole console, int processId,int duration, string traceFilename)
         {
             if (processId == 0)
             {
@@ -102,9 +98,11 @@ namespace DotNetEventPipe
         /// <summary>
         /// Reads trace and prints managed stacks
         /// </summary>
-        /// <returns></returns>
-        /// <remarks>This code is adopted by josalem from https://github.com/josalem/DotStack </remarks>
-        public int Analyze(IConsole console, FileInfo traceFile)
+        /// <param name="console"></param>
+        /// <param name="traceFile"></param>
+        /// <returns>Returns 0 for success and 1 for failure</returns>
+        /// <remarks>This code is adopted from josalem code https://github.com/josalem/DotStack </remarks>
+        public static int Analyze(IConsole console, FileInfo traceFile)
         {
             if (string.IsNullOrEmpty(traceFile.FullName))
             {
@@ -113,13 +111,13 @@ namespace DotNetEventPipe
                 Console.ResetColor();
                 return 1;
             }
-
+            
             Console.WriteLine("[Trace analysis started...]\n");
 
             // Both the namespaces have TraceLog, here we use Microsoft.Diagnostics.Tracing.Etlx.TraceLog;
             // The following line creates a etlx file and then does analysis using that.
             string tempEtlxFilename = TraceLog.CreateFromEventPipeDataFile(traceFile.FullName);
-            
+
             using (var symbolReader = new SymbolReader(System.IO.TextWriter.Null)
             { SymbolPath = SymbolPath.MicrosoftSymbolServerPath })
 

@@ -1,21 +1,13 @@
 ﻿using Microsoft.Diagnostics.NETCore.Client;
 using System;
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using System.Linq;
 using Process = System.Diagnostics.Process;
 
 namespace DotNetEventPipe
 {
-    public class ProcessStatusCommandHandler
+    public class PSCommandHandler
     {
-        // ps command and handler
-        public static Command ProcessStatusCommand(string description) =>
-        new Command(name: "ps", description)
-        {
-            Handler = CommandHandler.Create<IConsole>(PrintProcessStatus)
-        };
-
         public static void PrintProcessStatus(IConsole console)
         {
             Console.ForegroundColor = ConsoleColor.Green;

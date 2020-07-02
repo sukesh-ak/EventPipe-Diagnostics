@@ -9,14 +9,12 @@ namespace DotNetEventPipe
 {
     class Program
     {
-        static string dumpFilePath = string.Empty;
-
         public static Task<int> Main(string[] args)
         {
             var parser = new CommandLineBuilder()
+                .AddCommand(PSCommand())
                 .AddCommand(CollectCommand())
                 .AddCommand(AnalyzeCommand())
-                .AddCommand(ProcessStatusCommandHandler.ProcessStatusCommand("Process list with Event Pipe available for Diagnostics"))
                 .UseParseErrorReporting()
                 .UseDebugDirective()
                 .UseDefaults()
@@ -26,12 +24,19 @@ namespace DotNetEventPipe
         }
 
         #region command-line commands
+        // ps command and handler
+        public static Command PSCommand() =>
+        new Command(name: "ps", "Process list with Event Pipe available for Diagnostics")
+        {
+            Handler = CommandHandler.Create<IConsole>(PSCommandHandler.PrintProcessStatus)
+        };
+
         // Collect command and handler
         private static Command CollectCommand() =>
             new Command(name: "collect", description: "Capture trace from a process using Event Pipe")
             {
                 // Handler
-                CommandHandler.Create<IConsole, int, int, string>(new TraceStack().Collect),
+                CommandHandler.Create<IConsole, int, int, string>(TraceStack.Collect),
                 // Options
                 ProcessIdOption(), TraceDurationOption(), TraceFileNameOption()
             };
@@ -41,7 +46,7 @@ namespace DotNetEventPipe
             new Command(name: "analyze", description: "Analyze trace a process and prints managed call stack")
             {
                         // Handler
-                        CommandHandler.Create<IConsole, FileInfo>(new TraceStack().Analyze),
+                        CommandHandler.Create<IConsole, FileInfo>(TraceStack.Analyze),
                         // Options
                         FileNameOption()
             };
@@ -86,6 +91,7 @@ namespace DotNetEventPipe
                 Argument = new Argument<FileInfo>(name: "filename").ExistingOnly(), 
                 Required = true
             };
+
         #endregion
     }
 }
