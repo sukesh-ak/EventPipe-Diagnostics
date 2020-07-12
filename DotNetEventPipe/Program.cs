@@ -67,7 +67,7 @@ namespace DotNetEventPipe
         private static Option TraceDurationOption() =>
             new Option(
             aliases: new[] { "-d", "--duration" },
-            description: "Duration in seconds to run the trace.")
+            description: "Duration in seconds to run the trace. Default 10seconds")
             {
                 Argument = new Argument<int>(name: "duration")
             };
@@ -76,7 +76,7 @@ namespace DotNetEventPipe
         private static Option TraceFileNameOption() =>
             new Option(
             aliases: new[] { "-f", "--traceFilename" },
-            description: "Trace file name (without path).")
+            description: "Trace file name without path. Default pid-yyyyMMddHHmmss.nettrace")
             {
                 Argument = new Argument<string>(name: "filename")
             };

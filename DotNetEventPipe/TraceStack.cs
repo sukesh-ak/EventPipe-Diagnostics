@@ -44,9 +44,9 @@ namespace DotNetEventPipe
 
             if (string.IsNullOrEmpty(traceFilename))
                 // Default this to yyyyMMddHHmmss-PID.nettrace 
-                traceFilename = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + processId + ".nettrace";
+                traceFilename = processId + "-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".nettrace";
             else
-                traceFilename = traceFilename + "-" + processId + ".nettrace";
+                traceFilename = traceFilename + ".nettrace";
 
             FileInfo traceFile = new FileInfo(traceFilename);
 
