@@ -44,13 +44,15 @@ namespace DotNetEventPipe
 
             if (string.IsNullOrEmpty(traceFilename))
                 // Default this to yyyyMMddHHmmss-PID.nettrace 
-                traceFilename = Path.Combine(Environment.CurrentDirectory, "traces", DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + processId + ".nettrace");
+                traceFilename = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + processId + ".nettrace";
             else
-                traceFilename = Path.Combine(Environment.CurrentDirectory, "traces", traceFilename + ".nettrace");
+                traceFilename = traceFilename + "-" + processId + ".nettrace";
+
+            FileInfo traceFile = new FileInfo(traceFilename);
 
             console.Out.WriteLine($"Process ID : {processId}");
             console.Out.WriteLine($"Duration   : {duration}");
-            console.Out.WriteLine($"Trace file : {traceFilename}");
+            console.Out.WriteLine($"Trace file : {traceFile.FullName}");
 
             try
             {
@@ -74,7 +76,7 @@ namespace DotNetEventPipe
                     // Write event stream to trace file
                     Task readerTask = Task.Run(async () =>
                     {
-                        using (FileStream fs = new FileStream(traceFilename, FileMode.Create, FileAccess.Write))
+                        using (FileStream fs = new FileStream(traceFile.FullName, FileMode.Create, FileAccess.Write))
                         {
                             await eventPipeSession.EventStream.CopyToAsync(fs);
                         }
